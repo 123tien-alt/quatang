@@ -64,7 +64,7 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%) rotate(45deg); /* Di chuyển vào giữa và xoay ngược lại */
+        transform: translate(-50%, -50%) rotate(45deg);
         color: white;
         font-family: Arial, sans-serif;
         font-size: 14px;
@@ -72,42 +72,40 @@
         user-select: none;
         width: 80px;
         z-index: 2;
-        pointer-events: none; /* Đảm bảo không cản nhấp chuột */
+        pointer-events: none;
     }
-</style>
+    </style>
 </head>
 <body>
     <div id="heartButton" class="heart">
         <span class="heart-text">Nhấn vào đây</span>
     </div>
-    <video id="videoPlayer" loop playsinline>
+    
+    <!-- ✅ Video bị mute -->
+    <video id="videoPlayer" loop muted playsinline>
         <source src="Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster).mp4" type="video/mp4">
         Trình duyệt của bạn không hỗ trợ thẻ video.
     </video>
+
     <audio id="audioPlayer" loop>
         <source src="Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)_2.mp3" type="audio/mpeg">
         Trình duyệt của bạn không hỗ trợ thẻ âm thanh.
     </audio>
+
     <script>
         const heartButton = document.getElementById('heartButton');
         const videoPlayer = document.getElementById('videoPlayer');
         const audioPlayer = document.getElementById('audioPlayer');
 
         heartButton.addEventListener('click', () => {
-            // Đảm bảo có âm thanh
-            videoPlayer.muted = false;
+            // ✅ KHÔNG cần bỏ muted
             audioPlayer.muted = false;
-
-            // Phát video và âm thanh
             videoPlayer.play().catch(e => console.error('Lỗi phát video:', e));
             audioPlayer.play().catch(e => console.error('Lỗi phát âm thanh:', e));
-
-            // Hiển thị video, ẩn trái tim
             videoPlayer.style.display = 'block';
             heartButton.style.display = 'none';
         });
 
-        // Ngăn tạm dừng
         videoPlayer.addEventListener('pause', () => {
             console.log('Video tạm dừng, thử tiếp tục...');
             videoPlayer.play().catch(e => console.error('Lỗi tiếp tục video:', e));
