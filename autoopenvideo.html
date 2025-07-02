@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video và Âm thanh</title>
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    video {
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: none;
+    }
+
+    audio {
+        display: none;
+    }
+
+    .heart {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        position: absolute;
+        transform: rotate(-45deg);
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    .heart::before,
+    .heart::after {
+        content: '';
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        border-radius: 50%;
+        position: absolute;
+    }
+
+    .heart::before {
+        top: -50px;
+        left: 0;
+    }
+
+    .heart::after {
+        left: 50px;
+        top: 0;
+    }
+
+    .heart-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(45deg); /* Di chuyển vào giữa và xoay ngược lại */
+        color: white;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        text-align: center;
+        user-select: none;
+        width: 80px;
+        z-index: 2;
+        pointer-events: none; /* Đảm bảo không cản nhấp chuột */
+    }
+</style>
+</head>
+<body>
+    <div id="heartButton" class="heart">
+        <span class="heart-text">Nhấn vào đây</span>
+    </div>
+    <video id="videoPlayer" loop playsinline>
+        <source src="Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster).mp4" type="video/mp4">
+        Trình duyệt của bạn không hỗ trợ thẻ video.
+    </video>
+    <audio id="audioPlayer" loop>
+        <source src="Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)_2.mp3" type="audio/mpeg">
+        Trình duyệt của bạn không hỗ trợ thẻ âm thanh.
+    </audio>
+    <script>
+        const heartButton = document.getElementById('heartButton');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const audioPlayer = document.getElementById('audioPlayer');
+
+        heartButton.addEventListener('click', () => {
+            // Đảm bảo có âm thanh
+            videoPlayer.muted = false;
+            audioPlayer.muted = false;
+
+            // Phát video và âm thanh
+            videoPlayer.play().catch(e => console.error('Lỗi phát video:', e));
+            audioPlayer.play().catch(e => console.error('Lỗi phát âm thanh:', e));
+
+            // Hiển thị video, ẩn trái tim
+            videoPlayer.style.display = 'block';
+            heartButton.style.display = 'none';
+        });
+
+        // Ngăn tạm dừng
+        videoPlayer.addEventListener('pause', () => {
+            console.log('Video tạm dừng, thử tiếp tục...');
+            videoPlayer.play().catch(e => console.error('Lỗi tiếp tục video:', e));
+        });
+
+        audioPlayer.addEventListener('pause', () => {
+            console.log('Âm thanh tạm dừng, thử tiếp tục...');
+            audioPlayer.play().catch(e => console.error('Lỗi tiếp tục âm thanh:', e));
+        });
+    </script>
+</body>
+</html>
